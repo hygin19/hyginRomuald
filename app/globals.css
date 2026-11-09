@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background-color: #06060a;
+  color: #e9e9ef;
+}
+
+body {
+  background-image:
+    radial-gradient(900px 480px at 50% -12%, rgba(236, 18, 40, 0.22), transparent 70%),
+    radial-gradient(700px 420px at 110% 8%, rgba(140, 8, 24, 0.18), transparent 65%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(236, 18, 40, 0.4);
+}
+
+/* Thin dark scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #26262f transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #26262f;
+  border-radius: 999px;
+}
+
+@layer components {
+  .surface {
+    @apply rounded-2xl border border-white/[0.07] bg-ink-850/80 shadow-card backdrop-blur;
+  }
+
+  .surface-flat {
+    @apply rounded-2xl border border-white/[0.06] bg-ink-900/70;
+  }
+
+  .label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-white/40;
+  }
+
+  .display-num {
+    @apply font-display font-extrabold tabular-nums tracking-tight;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold
+      transition active:scale-[0.985] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-gradient-to-b from-flame-400 to-flame-600 text-white shadow-glow
+      hover:from-flame-300 hover:to-flame-500;
+  }
+
+  .btn-ghost {
+    @apply btn border border-white/10 bg-white/[0.03] text-white/80 hover:bg-white/[0.07] hover:text-white;
+  }
+
+  .btn-mint {
+    @apply btn bg-gradient-to-b from-[#2ee68a] to-[#12b565] text-[#032015] hover:from-[#49f39d];
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-white/10 bg-ink-950/70 px-4 py-3 text-sm text-white
+      placeholder:text-white/25 focus:border-flame-500/70 focus:outline-none focus:ring-2 focus:ring-flame-500/20;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-semibold;
+  }
+
+  .nav-link {
+    @apply flex flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-[10px] font-semibold uppercase tracking-wider text-white/45 transition;
+  }
+
+  .nav-link-active {
+    @apply text-flame-400;
+  }
+}

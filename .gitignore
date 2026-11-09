@@ -32,3 +32,16 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Environnement local (les secrets ne vivent jamais dans le dépôt)
+.env
+.env.local
+.env*.local
+
