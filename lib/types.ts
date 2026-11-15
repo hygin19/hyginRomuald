@@ -95,3 +95,25 @@ export type HonoreAdapterStatus = {
   endpoints: { name: string; method: string; path: string; verified: boolean }[];
   notice: string;
 };
+
+/** Module « Historique manuel » — saisie 100 % manuelle, aucune capture automatique. */
+export type SyncStatus = "pending" | "synced";
+
+export type MultiplierHistoryItem = {
+  id: string;
+  multiplier: number;
+  /** ISO 8601, instant exact de la saisie */
+  occurredAt: string;
+  createdAt: string;
+  createdBy: string;
+  source: "manual";
+  syncStatus: SyncStatus;
+};
+
+export type MultiplierHistoryPage = {
+  items: MultiplierHistoryItem[];
+  page: number;
+  pageSize: number;
+  total: number;
+  pages: number;
+};

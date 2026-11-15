@@ -56,3 +56,41 @@ export function timeAgo(value: string | number | Date): string {
 export function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
 }
+
+/* Historique manuel — affichage et saisie en Africa/Antananarivo (UTC+3).
+   Antananarivo n'applique aucun changement d'heure : l'offset fixe +03:00 est
+   donc exact, et il évite de dépendre des données de fuseaux du navigateur. */
+const HISTORY_OFFSET_MS = 3 * 3_600_000;
+
+function shiftedToAntananarivo(value: string | number | Date = Date.now()): Date {
+  return new Date(new Date(value).getTime() + HISTORY_OFFSET_MS);
+}
+
+const historyDateFormatter = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "UTC",
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+
+const historyTimeFormatter = new Intl.DateTimeFormat("fr-FR", {
+  timeZone: "UTC",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+});
+
+/** 2026-11-15T19:05:00Z -> "15/11/2026" (heure d'Antananarivo). */
+export function formatHistoryDate(value: string | number | Date): string {
+  return historyDateFormatter.format(shiftedToAntananarivo(value));
+}
+
+/** 2026-11-15T19:05:00Z -> "22:05:00" (heure d'Antananarivo). */
+export function formatHistoryTime(value: string | number | Date): string {
+  return historyTimeFormatter.format(shiftedToAntananarivo(value));
+}
+
+/** Valeur `datetime-local` (avec secondes) d'un instant, en heure locale malgache. */
+export function toHistoryInputValue(value: string | number | Date = Date.now()): string {
+  return shiftedToAntananarivo(value).toISOString().slice(0, 19);
+}

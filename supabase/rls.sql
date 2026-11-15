@@ -48,3 +48,17 @@ create policy bets_select_own on public.bets
 drop policy if exists predictions_select_own on public.predictions;
 create policy predictions_select_own on public.predictions
   for select using (auth.uid() = user_id or public.is_admin());
+
+-- Historique manuel : chaque utilisateur ne lit que ses propres saisies.
+-- Les écritures passent par le serveur (clé service_role) ; ces politiques
+-- protègent les lectures faites directement avec la clé anon.
+alter table public.multiplier_history enable row level security;
+alter table public.multiplier_history_entity enable row level security;
+
+drop policy if exists multiplier_history_select_own on public.multiplier_history;
+create policy multiplier_history_select_own on public.multiplier_history
+  for select using (auth.uid() = created_by or public.is_admin());
+
+drop policy if exists multiplier_history_entity_select_own on public.multiplier_history_entity;
+create policy multiplier_history_entity_select_own on public.multiplier_history_entity
+  for select using (auth.uid() = created_by or public.is_admin());

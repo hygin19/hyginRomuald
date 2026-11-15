@@ -28,7 +28,7 @@ export function BottomNav({ isAdmin }: { isAdmin: boolean }) {
                 className={clsx("nav-link", active && "nav-link-active")}
               >
                 <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 1.8} />
-                <span>{item.label}</span>
+                <span>{item.shortLabel ?? item.label}</span>
               </Link>
             </li>
           );

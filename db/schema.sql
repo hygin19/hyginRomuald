@@ -60,3 +60,33 @@ create table if not exists public.predictions (
 );
 create index if not exists predictions_user_idx on public.predictions (user_id, created_at desc);
 create index if not exists predictions_pending_idx on public.predictions (result, target_round_no);
+
+-- Historique manuel des multiplicateurs (module séparé, saisie manuelle only).
+-- Deux copies indépendantes, même UUID : `multiplier_history` est la table
+-- Supabase PostgreSQL, `multiplier_history_entity` la copie applicative
+-- (équivalent de l'entité MultiplierHistory côté base de l'application).
+create table if not exists public.multiplier_history (
+  id uuid primary key,
+  multiplier numeric(12, 4) not null check (multiplier > 0),
+  occurred_at timestamptz not null,
+  created_at timestamptz not null default now(),
+  created_by uuid not null,
+  source text not null default 'manual' check (source = 'manual'),
+  sync_status text not null default 'pending' check (sync_status in ('pending', 'synced')),
+  updated_at timestamptz not null default now()
+);
+create index if not exists multiplier_history_occurred_idx
+  on public.multiplier_history (created_by, occurred_at desc);
+
+create table if not exists public.multiplier_history_entity (
+  id uuid primary key,
+  multiplier numeric(12, 4) not null check (multiplier > 0),
+  occurred_at timestamptz not null,
+  created_at timestamptz not null default now(),
+  created_by uuid not null,
+  source text not null default 'manual' check (source = 'manual'),
+  sync_status text not null default 'pending' check (sync_status in ('pending', 'synced')),
+  updated_at timestamptz not null default now()
+);
+create index if not exists multiplier_history_entity_occurred_idx
+  on public.multiplier_history_entity (created_by, occurred_at desc);

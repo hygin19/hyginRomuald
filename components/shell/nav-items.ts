@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  History,
   LayoutDashboard,
   Plane,
   Radar,
@@ -10,6 +11,8 @@ import {
 export type NavItem = {
   href: string;
   label: string;
+  /** Libellé court utilisé par la barre de navigation mobile. */
+  shortLabel?: string;
   icon: typeof Plane;
 };
 
@@ -18,6 +21,7 @@ export const NAV_ITEMS: NavItem[] = [
   { href: "/prediction", label: "Prédictions", icon: Radar },
   { href: "/jeu", label: "Jouer", icon: Plane },
   { href: "/statistiques", label: "Stats", icon: BarChart3 },
+  { href: "/historique", label: "Historique", shortLabel: "Histo", icon: History },
   { href: "/profil", label: "Profil", icon: User },
 ];
 
