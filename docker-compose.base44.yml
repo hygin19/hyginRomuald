@@ -1,0 +1,48 @@
+# AVIATOR NEON TRACKER — development stack for the Base44 sandbox.
+# One Python service serves both the API and the static neon frontend on host port 3000.
+services:
+  web:
+    image: python:3.12-slim
+    restart: on-failure
+    working_dir: /app
+    command:
+      - sh
+      - -ec
+      - |
+        pip install --no-cache-dir -q -r backend/requirements.txt
+        exec uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app/backend
+    ports:
+      - "3000:8000"
+    environment:
+      - BASE44_PREVIEW_MODE
+      - BASE44_PUBLIC_HOST_SUFFIX
+      - BASE44_SANDBOX_HOST_DOMAIN
+      - AVIATOR_DB_PATH=/data/aviator.db
+      - PIP_CACHE_DIR=/pipcache
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    volumes:
+      - ${BASE44_PROJECT_ROOT}:/app
+      - aviator_data:/data
+      - pip_cache:/pipcache
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - |
+          import json, sys, urllib.request
+          try:
+              with urllib.request.urlopen("http://127.0.0.1:8000/api/health", timeout=3) as response:
+                  ok = response.status == 200 and json.load(response).get("status") == "ok"
+          except Exception:
+              ok = False
+          sys.exit(0 if ok else 1)
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+volumes:
+  aviator_data:
+  pip_cache:

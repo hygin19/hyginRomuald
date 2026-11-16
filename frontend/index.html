@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#05070f" />
+    <title>AVIATOR NEON TRACKER</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E%E2%9C%88%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="fx-grid" aria-hidden="true"></div>
+    <div class="fx-glow fx-glow--cyan" aria-hidden="true"></div>
+    <div class="fx-glow fx-glow--pink" aria-hidden="true"></div>
+    <div class="fx-glow fx-glow--purple" aria-hidden="true"></div>
+
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand__mark" aria-hidden="true">✈</span>
+          <div class="brand__text">
+            <h1 class="brand__title">AVIATOR <span>NEON</span> TRACKER</h1>
+            <p class="brand__tagline" data-i18n="subtitle">
+              Log every Aviator multiplier with its exact time — manually, no predictions.
+            </p>
+          </div>
+        </div>
+
+        <div class="lang" role="group" data-i18n-aria="langLabel" aria-label="Language">
+          <button type="button" class="lang__btn" data-lang="mg" lang="mg">MG</button>
+          <button type="button" class="lang__btn" data-lang="fr" lang="fr">FR</button>
+          <button type="button" class="lang__btn" data-lang="en" lang="en">EN</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="card card--entry" aria-labelledby="entry-title">
+          <h2 class="card__title" id="entry-title" data-i18n="formTitle">Add a multiplier</h2>
+
+          <form id="result-form" class="form" novalidate>
+            <div class="field">
+              <label class="field__label" for="multiplier" data-i18n="multiplierLabel">
+                Multiplier
+              </label>
+              <div class="field__glow">
+                <input
+                  class="input"
+                  id="multiplier"
+                  name="multiplier"
+                  type="text"
+                  inputmode="decimal"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="2.50x"
+                  data-i18n-placeholder="multiplierPlaceholder"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="result-date" data-i18n="dateLabel">Date</label>
+              <div class="field__glow">
+                <input class="input" id="result-date" name="result_date" type="date" required />
+              </div>
+            </div>
+
+            <fieldset class="field field--time">
+              <legend class="field__label" data-i18n="timeLabel">Exact time</legend>
+              <div class="time">
+                <div class="time__part">
+                  <input
+                    class="input input--time"
+                    id="time-hours"
+                    name="hours"
+                    type="number"
+                    min="0"
+                    max="23"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="HH"
+                    aria-label="Hours"
+                    data-i18n-aria="hours"
+                    required
+                  />
+                  <span class="time__caption" data-i18n="hours">HOURS</span>
+                </div>
+                <span class="time__sep" aria-hidden="true">:</span>
+                <div class="time__part">
+                  <input
+                    class="input input--time"
+                    id="time-minutes"
+                    name="minutes"
+                    type="number"
+                    min="0"
+                    max="59"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="MM"
+                    aria-label="Minutes"
+                    data-i18n-aria="minutes"
+                    required
+                  />
+                  <span class="time__caption" data-i18n="minutes">MINUTES</span>
+                </div>
+                <span class="time__sep" aria-hidden="true">:</span>
+                <div class="time__part">
+                  <input
+                    class="input input--time"
+                    id="time-seconds"
+                    name="seconds"
+                    type="number"
+                    min="0"
+                    max="59"
+                    step="1"
+                    inputmode="numeric"
+                    placeholder="SS"
+                    aria-label="Seconds"
+                    data-i18n-aria="seconds"
+                    required
+                  />
+                  <span class="time__caption" data-i18n="seconds">SECONDS</span>
+                </div>
+              </div>
+            </fieldset>
+
+            <button class="btn btn--primary" type="submit">
+              <span data-i18n="saveBtn">SAVE RESULT</span>
+            </button>
+          </form>
+        </section>
+
+        <section class="card card--history" aria-labelledby="history-title">
+          <div class="card__head">
+            <h2 class="card__title" id="history-title" data-i18n="historyTitle">
+              Saved results
+            </h2>
+            <div class="tools">
+              <button class="btn btn--ghost" type="button" id="export-btn">
+                <span data-i18n="exportBtn">EXPORT DATABASE (.DB)</span>
+              </button>
+              <button class="btn btn--ghost btn--ghost-pink" type="button" id="import-btn">
+                <span data-i18n="importBtn">IMPORT DATABASE</span>
+              </button>
+              <input
+                id="import-input"
+                type="file"
+                accept=".db,.sqlite,.sqlite3,application/vnd.sqlite3,application/x-sqlite3"
+                hidden
+              />
+            </div>
+          </div>
+
+          <div class="table-wrap" id="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="colId">ID</th>
+                  <th scope="col" data-i18n="colMultiplier">Multiplier</th>
+                  <th scope="col" data-i18n="colDate">Date</th>
+                  <th scope="col" data-i18n="colTime">Time</th>
+                  <th scope="col" class="table__actions-head" data-i18n="colActions">Action</th>
+                </tr>
+              </thead>
+              <tbody id="results-body"></tbody>
+            </table>
+
+            <p class="empty" id="empty-state" data-i18n="emptyState" hidden>
+              No results yet. Add your first multiplier above.
+            </p>
+            <p class="empty" id="loading-state" data-i18n="loading">Loading results…</p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p data-i18n="footerNote">
+          Manual recording only — no predictions, no betting, no automatic collection.
+        </p>
+      </footer>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="/static/i18n.js"></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
